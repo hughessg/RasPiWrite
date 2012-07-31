@@ -174,7 +174,7 @@ class transferInBackground (threading.Thread): 	#Runs the dd command in a thread
 	global path
 	if OS[0] != 'Darwin':
 		copyString = 'dd bs=1M if=%s of=%s' % (path,SDsnip)
-	else
+	else:
 		copyString = 'dd bs=1m if=%s of=%s' % (path,SDsnip)
 	print 'Running ' + copyString + '...'
 
@@ -272,10 +272,10 @@ def transfer(file,archiveType,obtain,SD,URL):	#unzips the disk image
 		SDsnip = "/dev/mmcblk" + SD[11]
 	else:
 		if OS[0] != 'Darwin': 
-        	SDsnip =  SD.replace(' ', '')[:-1]
+			SDsnip =  SD.replace(' ', '')[:-1]
  		else:
  			# remove weird partition notation in OS X partition names
-        	SDsnip =  SD.replace(' ', '')[:-2]
+			SDsnip =  SD.replace(' ', '')[:-2]
 
 	print path
 	print '\n\n###################################################################'
@@ -313,6 +313,7 @@ Relevent information:
 > Arch - Login is root/root
 > Fedora - Login is root/fedoraarm
 > QtonPi - Login is root/rootme
+> Raspbian - Login is pi/raspberry
 ###########################################
 Thank You for using RasPiWrite, you are now free to eject your drive 
    		"""
@@ -345,6 +346,10 @@ productivity and programming
 > QtonPi [OPTION 4]""" + end + """
 QtonPi is an Embedded Linux platform plus SDK optimized for developing and running Qt 5 Apps on Raspberry Pi.
 		"""
+		print boldStart + """
+> Raspbian [OPTION 5]""" + end + """
+Raspbian is a reference root filesystem from Alex and Dom, based on the Raspbian optimised version of Debian, and containing LXDE, Midori, development tools and example source code for multimedia functions.
+		"""
 		osChoice = raw_input('Your Choice e.g: \'1\' : ')
 		if osChoice == '1':
 			URL = choice(getZipUrl(grabRoot('debian')))
@@ -366,6 +371,11 @@ QtonPi is an Embedded Linux platform plus SDK optimized for developing and runni
 			print 'Downloading QtonPi 14 from [%s]'% URL
 			match = grabRoot('qtonpi').rpartition('/')
 			transfer(match[-1],'bz2','dl',SD, URL)
+		if osChoice == '5':
+			URL = choice(getZipUrl(grabRoot('2012')))
+			print 'Downloading Raspbian from [%s]'% URL
+			match = grabRoot('2012').rpartition('/')
+			transfer(match[-1],'zip','dl',SD, URL)	
 
 	if (userChoice == 'N') or (userChoice == 'n'):
 		userLocate = raw_input('Please locate the disk image (.zip, .img.gz, .tar.bz2 (.tar.bz2 only working with QtonPi distros currently): ')
